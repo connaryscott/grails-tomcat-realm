@@ -21,7 +21,7 @@ Tomcat v7
     CATALINA_HOME=/home/chuck/workspace/apache-tomcat-7.0.29
     CATALINA_BASE=/home/chuck/workspace/apache-tomcat-7.0.29
 
-Tomcat Configured with: 
+Tomcat Configured with (see https://github.com/connaryscott/JaasDev):
 
     JAAS Login Module: $CATALINA_HOME/lib/JaasTutorial.jar
     JAAS Configuration: $CATALINA_BASE/conf/sample_jaas.config 
@@ -29,10 +29,9 @@ Tomcat Configured with:
 
     CATALINA_OPTS=-Djava.security.auth.login.config=${CATALINA_BASE}/conf/sample_jaas.config
 
- see: https://github.com/connaryscott/JaasDev
 
 
-OpenLDAP Setup, see: https://github.com/connaryscott/JaasDev
+OpenLDAP Setup (see https://github.com/connaryscott/JaasDev)
 
 Java/JVM 1.6
 
@@ -139,6 +138,10 @@ modify the source web.xml for the ROLE_YANA_USER role
 
     [chuck@centos-62-64-vm3 helloworld]$ vi src/templates/war/web.xml 
 
+    <login-config>
+        <auth-method>BASIC</auth-method>
+        <realm-name>Example Basic Authentication</realm-name>
+    </login-config>
     <security-constraint>
             <web-resource-collection>
                     <web-resource-name>web</web-resource-name>
