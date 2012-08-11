@@ -23,8 +23,9 @@ Tomcat v7
 
 Tomcat Configured with: 
 
-    $CATALINA_HOME/lib/JaasTutorial.jar
-    $CATALINA_BASE/conf/sample_jaas.config 
+    JAAS Login Module: $CATALINA_HOME/lib/JaasTutorial.jar
+    JAAS Configuration: $CATALINA_BASE/conf/sample_jaas.config 
+    helloworld context configuration:  $CATALINA_BASE/conf/Catalina/localhost/helloworld.xml 
 
     CATALINA_OPTS=-Djava.security.auth.login.config=${CATALINA_BASE}/conf/sample_jaas.config
 
@@ -128,10 +129,13 @@ Run the s2-quickstart script with User/Role domain classes
     grails-app/domain/helloworld/UserRole.groovy
     grails-app/domain/helloworld/User.groovy
     
-Configure hello world grails templates and modify the source web.xml  for the ROLE_YANA_USER role
+Configure Hello World Grails Templates 
+=============
 
     [chuck@centos-62-64-vm3 helloworld]$ grails install-templates
     | Templates installed successfully
+
+modify the source web.xml for the ROLE_YANA_USER role
 
     [chuck@centos-62-64-vm3 helloworld]$ vi src/templates/war/web.xml 
 
@@ -168,11 +172,43 @@ When connecting to http://<yourHost>:8080/helloworld/ with the following credend
     username:  rfirefly
     password:  Gr0uch0M@rx
 
-we will get the following browser error:
+Which shows that we authenticated in the catalina.out
 
-    HTTP Status 403 - Access to the requested resource has been denied
-    type Status report
-    message Access to the requested resource has been denied
-    description Access to the specified resource (Access to the requested resource has been denied) has been forbidden.
+    sample.module.SampleLoginModule DEBUG: hostname: localhost
+    sample.module.SampleLoginModule DEBUG: _port: 389
+    sample.module.SampleLoginModule DEBUG: providerUrl: ldap://localhost
+    sample.module.SampleLoginModule DEBUG: contextFactory: com.sun.jndi.ldap.LdapCtxFactory
+    sample.module.SampleLoginModule DEBUG: userBaseDn: ou=People,dc=dtolabs,dc=com
+    sample.module.SampleLoginModule DEBUG: roleBaseDn: ou=roles,dc=dtolabs,dc=com
+    sample.module.SampleLoginModule DEBUG: userObjectClass: posixAccount
+    sample.module.SampleLoginModule DEBUG: userRdnAttribute: uid
+    sample.module.SampleLoginModule DEBUG: userIdAttribute: uid
+    sample.module.SampleLoginModule DEBUG: userPasswordAttribute: userPassword
+    sample.module.SampleLoginModule DEBUG: roleObjectClass: posixGroup
+    sample.module.SampleLoginModule DEBUG: roleMemberAttribute: memberUid
+    sample.module.SampleLoginModule DEBUG: roleUsernameMemberAttribute: memberUid
+    sample.module.SampleLoginModule DEBUG: roleNameAttribute: cn
+    sample.module.SampleLoginModule DEBUG: username: rfirefly
+    sample.module.SampleLoginModule DEBUG: Role for user uid=rfirefly,ou=People,dc=dtolabs,dc=com: admin
+    sample.module.SampleLoginModule DEBUG: Role for user uid=rfirefly,ou=People,dc=dtolabs,dc=com: user
+    sample.module.SampleLoginModule DEBUG: Role for user uid=rfirefly,ou=People,dc=dtolabs,dc=com: YANA_USER
+    sample.module.SampleLoginModule DEBUG: Role for user uid=rfirefly,ou=People,dc=dtolabs,dc=com: YANA_ADMIN
+    sample.module.SampleLoginModule DEBUG: Role for user uid=rfirefly,ou=People,dc=dtolabs,dc=com: ROLE_YANA_ARCHITECT
+    sample.module.SampleLoginModule DEBUG: Role for user uid=rfirefly,ou=People,dc=dtolabs,dc=com: ROLE_YANA_USER
+    sample.module.SampleLoginModule DEBUG: Role for user uid=rfirefly,ou=People,dc=dtolabs,dc=com: ROLE_YANA_ADMIN
+    sample.module.SampleLoginModule INFO: JettyCachingLdapLoginModule: User 'rfirefly' has roles: [admin, user, YANA_USER, YANA_ADMIN, ROLE_YANA_ARCHITECT, ROLE_YANA_USER, ROLE_YANA_ADMIN]
+    sample.module.SampleLoginModule DEBUG: checking role: admin
+    sample.module.SampleLoginModule DEBUG: adding role: admin to user: rfirefly
+    sample.module.SampleLoginModule DEBUG: checking role: user
+    sample.module.SampleLoginModule DEBUG: adding role: user to user: rfirefly
+    sample.module.SampleLoginModule DEBUG: checking role: YANA_USER
+    sample.module.SampleLoginModule DEBUG: adding role: YANA_USER to user: rfirefly
+    sample.module.SampleLoginModule DEBUG: checking role: YANA_ADMIN
+    sample.module.SampleLoginModule DEBUG: adding role: YANA_ADMIN to user: rfirefly
+    sample.module.SampleLoginModule DEBUG: checking role: ROLE_YANA_ARCHITECT
+    sample.module.SampleLoginModule DEBUG: adding role: ROLE_YANA_ARCHITECT to user: rfirefly
+    sample.module.SampleLoginModule DEBUG: checking role: ROLE_YANA_USER
+    sample.module.SampleLoginModule DEBUG: adding role: ROLE_YANA_USER to user: rfirefly
+    sample.module.SampleLoginModule DEBUG: checking role: ROLE_YANA_ADMIN
+    sample.module.SampleLoginModule DEBUG: adding role: ROLE_YANA_ADMIN to user: rfirefly
 
-Which shows that we authenticated but are not authorized.
